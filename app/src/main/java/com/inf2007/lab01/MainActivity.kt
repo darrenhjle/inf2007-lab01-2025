@@ -56,7 +56,7 @@ fun MainScreen() {
                 Button(
                     onClick = {
                         if (username.isNotBlank()) {
-                            showGreeting = false
+                            showGreeting = true
                         }
                     },
                     modifier = Modifier
@@ -94,12 +94,22 @@ fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier =
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!, Welcome to InF2007!",
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag("greeting")
-    )
+    if (name.isNotBlank()) {
+        Text(
+            text = "Hello $name!, Welcome to InF2007!",
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("greeting")
+        )
+    } else {
+        Text(
+            text = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("greeting")
+        )
+    }
+
 }
 
 @Preview(showBackground = true)
