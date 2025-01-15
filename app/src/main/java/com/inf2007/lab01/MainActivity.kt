@@ -39,7 +39,9 @@ fun MainScreen() {
     Lab01Theme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             var username by remember { mutableStateOf("") }
+            var usernameSubmitted by remember { mutableStateOf("") }
             var showGreeting by remember { mutableStateOf(false) }
+
 
             Column(
                 modifier = Modifier
@@ -50,13 +52,18 @@ fun MainScreen() {
             ) {
                 UserInput(
                     name = username,
-                    onNameChange = { username = it }
+                    onNameChange = { username = it },
+                    modifier = Modifier.testTag("nameInput")
                 )
 
                 Button(
                     onClick = {
                         if (username.isNotBlank()) {
+                            usernameSubmitted = username
                             showGreeting = true
+                        }
+                        else {
+                            showGreeting = false
                         }
                     },
                     modifier = Modifier
@@ -68,10 +75,11 @@ fun MainScreen() {
 
                 if (showGreeting) {
                     Greeting(
-                        name = username,
+                        name = usernameSubmitted,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
+                            .testTag("greetingMsg")
                     )
 
                 }
@@ -94,22 +102,12 @@ fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier =
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    if (name.isNotBlank()) {
-        Text(
-            text = "Hello $name!, Welcome to InF2007!",
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("greeting")
-        )
-    } else {
-        Text(
-            text = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("greeting")
-        )
-    }
-
+    Text(
+        text = "Hello $name!, Welcome to InF2007!",
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("greeting")
+    )
 }
 
 @Preview(showBackground = true)
